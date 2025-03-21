@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) Walrus Foundation
+# Copyright (c) Mysten Labs, Inc.
 # SPDX-License-Identifier: Apache-2.0
 
 ## -----------------------------------------------------------------------------
@@ -38,9 +38,8 @@ echo "starting stress client"
 ## -----------------------------------------------------------------------------
 ## Start the node
 ## -----------------------------------------------------------------------------
-RUST_BACKTRACE=1 RUST_LOG=info /opt/walrus/bin/walrus-stress \
+RUST_BACKTRACE=1 RUST_LOG=info /opt/walrus/bin/walrus-stake \
     --config-path /opt/walrus/outputs/client_config.yaml \
-    stress \
     --write-load 10 \
     --read-load 10 \
     --n-clients 2 \

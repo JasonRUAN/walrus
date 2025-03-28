@@ -11,11 +11,12 @@ die() {
   exit 1
 }
 
+build_dir="$(realpath "$(dirname "$0")")"
+
 # chdir to git root
 git_root=$(cd "$(dirname "$0")" && git rev-parse --show-toplevel) || die "Failed to get git root"
 cd "$git_root" || die "Failed to chdir to git root"
 
-build_dir="$(realpath "$(dirname "$0")")"
 sui_version="$(cargo tree --package sui-rpc-api | grep sui-rpc-api | grep -Eo 'testnet-[^#)]*')"
 msg "Using SUI version: $sui_version"
 # Manually start local registry.
@@ -48,6 +49,13 @@ docker/walrus-antithesis/build-walrus-image-for-antithesis/build.sh \
   --build-arg RUSTFLAGS= \
   --build-arg LD_LIBRARY_PATH= \
   -t "$local_walrus_image" || die "Failed to build walrus-antithesis image"
+
+cleanup-docker-compose() {
+  docker compose -f "$1"/docker-compose.yaml down
+}
+
+# Kill docker compose on exit.
+trap 'cleanup_docker_compose '"$build_dir" EXIT
 
 msg "Running docker compose"
 cd "$build_dir" || die "Failed to chdir to build dir"

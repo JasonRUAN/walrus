@@ -19,7 +19,9 @@ printf "build date: \t%s\n" "$BUILD_DATE"
 printf "git revision: \t%s\n" "$GIT_REVISION"
 echo
 
-docker build -f "$DOCKERFILE" "$REPO_ROOT" \
+docker build \
+  --progress plain \
+  -f "$DOCKERFILE" "$REPO_ROOT" \
   --build-arg GIT_REVISION="$GIT_REVISION" \
   --build-arg BUILD_DATE="$BUILD_DATE" \
   --platform linux/"$(uname -m)" \

@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (c) Walrus Foundation
+# SPDX-License-Identifier: Apache-2.0
 # shellcheck disable=SC2155
 # export DOCKER_DEFAULT_PLATFORM=linux/amd64
 

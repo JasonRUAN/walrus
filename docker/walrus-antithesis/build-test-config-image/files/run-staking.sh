@@ -13,13 +13,11 @@ mkdir -p /root/.sui/sui_config
 mkdir -p /root/.config/walrus
 mkdir -p /opt/walrus/outputs
 
-# copy from deploy outputs
-# TODO(zhewu): here we are using the admin wallet to run the staking client, which is not ideal.
-# We need to create several client wallets for the staking test so that we can have more than one
-# stress client running concurrently.
-cp /opt/walrus/outputs/sui_admin.yaml /root/.sui/sui_config/client.yaml
-cp /opt/walrus/outputs/sui_admin.keystore /root/.sui/sui_config/sui.keystore
-cp /opt/walrus/outputs/sui_admin.aliases /root/.sui/sui_config/sui.aliases
+# copy from deploy outputs so that we can use `sui client` directly, otherwise, we don't really need
+# this copying.
+cp /opt/walrus/outputs/staking.yaml /root/.sui/sui_config/client.yaml
+cp /opt/walrus/outputs/staking.keystore /root/.sui/sui_config/sui.keystore
+cp /opt/walrus/outputs/staking.aliases /root/.sui/sui_config/sui.aliases
 
 echo "Disk space usage:"
 df -h
@@ -38,8 +36,7 @@ echo "starting staking client"
 ## -----------------------------------------------------------------------------
 ## Start the node
 ## -----------------------------------------------------------------------------
-RUST_BACKTRACE=1 RUST_LOG=info /opt/walrus/bin/walrus-stress \
-    --config-path /opt/walrus/outputs/client_config.yaml \
+RUST_BACKTRACE=1 RUST_LOG=debug /opt/walrus/bin/walrus-stress \
+    --config-path /opt/walrus/outputs/client_config_staking.yaml \
     --sui-network "http://10.0.0.20:9000;http://10.0.0.20:9123/gas" \
-    --wallet-path /root/.sui/sui_config/client.yaml \
     staking

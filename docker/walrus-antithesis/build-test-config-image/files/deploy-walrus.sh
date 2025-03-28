@@ -32,4 +32,5 @@ echo "Deploying system contract"
 echo "Generating dry run configs"
 /opt/walrus/bin/walrus-deploy generate-dry-run-configs \
   --working-dir /opt/walrus/outputs \
+  --extra-client-wallets stress,staking \
   || die "Failed to generate dry-run configs"

@@ -15,7 +15,6 @@ use std::{
 use anyhow::Context;
 use clap::{Parser, Subcommand};
 use rand::{seq::SliceRandom, RngCore};
-use sui_sdk::wallet_context::WalletContext;
 use sui_types::base_types::ObjectID;
 use walrus_service::{
     client::{metrics::ClientMetrics, Config, Refiller},
@@ -23,7 +22,7 @@ use walrus_service::{
 };
 use walrus_sui::{
     client::{CoinType, ReadClient, SuiContractClient, MIN_STAKING_THRESHOLD},
-    config::load_wallet_context_from_path,
+    config::WalletConfig,
     types::StorageNode,
     utils::SuiNetwork,
 };
@@ -115,7 +114,7 @@ struct StressArgs {
 async fn main() -> anyhow::Result<()> {
     let args = Args::parse();
     let _ = tracing_subscriber::fmt::try_init();
-    let config: Config =
+    let mut config: Config =
         load_from_yaml(args.config_path).context("Failed to load client config")?;
 
     // Start the metrics server.
@@ -125,19 +124,25 @@ async fn main() -> anyhow::Result<()> {
     let metrics = Arc::new(ClientMetrics::new(&prometheus_registry));
     tracing::info!("starting metrics server on {metrics_address}");
 
-    let wallet = load_wallet_context_from_path(args.wallet_path)?;
+    if let Some(wallet_path) = &args.wallet_path {
+        tracing::info!(
+            "overriding wallet configuration from '{}'",
+            wallet_path.display()
+        );
+        config.wallet_config = Some(WalletConfig::from_path(wallet_path));
+    }
+
     match args.command {
         Commands::Stress(stress_args) => {
-            run_stress(config, metrics, wallet, args.sui_network, stress_args).await
+            run_stress(config, metrics, args.sui_network, stress_args).await
         }
-        Commands::Staking => run_staking(config, metrics, wallet).await,
+        Commands::Staking => run_staking(config, metrics).await,
     }
 }
 
 async fn run_stress(
     config: Config,
     metrics: Arc<ClientMetrics>,
-    wallet: WalletContext,
     sui_network: SuiNetwork,
     args: StressArgs,
 ) -> anyhow::Result<()> {
@@ -145,7 +150,8 @@ async fn run_stress(
 
     // Start the write transaction generator.
     let gas_refill_period = Duration::from_millis(args.gas_refill_period_millis.get());
-
+    let wallet = WalletConfig::load_wallet_context(config.wallet_config.as_ref())
+        .context("Failed to load wallet context")?;
     let contract_client = config.new_contract_client(wallet, None).await?;
 
     let refiller = Refiller::new(
@@ -179,14 +185,12 @@ enum StakingModeAtEpoch {
     Withdraw(u32),
 }
 
-async fn run_staking(
-    config: Config,
-    _metrics: Arc<ClientMetrics>,
-    wallet: WalletContext,
-) -> anyhow::Result<()> {
+async fn run_staking(config: Config, _metrics: Arc<ClientMetrics>) -> anyhow::Result<()> {
     tracing::info!("Starting the staking stress runner.");
     // Start the re-staking machine.
     let restaking_period = Duration::from_secs(15);
+    let wallet = WalletConfig::load_wallet_context(config.wallet_config.as_ref())
+        .context("Failed to load wallet context")?;
     let contract_client: SuiContractClient = config.new_contract_client(wallet, None).await?;
 
     // The Staked Wal at any given time.
@@ -268,8 +272,6 @@ async fn run_staking(
             }
             StakingModeAtEpoch::Withdraw(epoch) => {
                 if epoch <= current_epoch {
-                    let mut wal_staked_temp = Default::default();
-
                     tracing::info!(
                         current_epoch,
                         ?wal_staked,
@@ -277,6 +279,7 @@ async fn run_staking(
                     );
 
                     // Empty the current map so we can start our staking simulation anew.
+                    let mut wal_staked_temp = Default::default();
                     std::mem::swap(&mut wal_staked_temp, &mut wal_staked);
 
                     // Unstake any Wal we had staked.

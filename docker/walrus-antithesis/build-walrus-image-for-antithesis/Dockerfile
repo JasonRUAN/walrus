@@ -47,7 +47,8 @@ ENV RUSTFLAGS="$RUSTFLAGS"
 
 # Build all binaries with Antithesis instrumentation
 ARG LD_LIBRARY_PATH="/usr/lib/libvoidstar.so"
-RUN $LD_LIBRARY_PATH \
+ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH"
+RUN LD_LIBRARY_PATH=$LD_LIBRARY_PATH \
     cargo build \
     --profile $PROFILE \
     --bin walrus \

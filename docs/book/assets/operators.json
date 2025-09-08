@@ -51,7 +51,8 @@
       },
       "https://sm1-walrus-mainnet-aggregator.stakesquid.com": {
         "operator": "StakeSquid",
-        "functional": false
+        "functional": false,
+        "cache": true
       },
       "https://sui-walrus-mainnet-aggregator.bwarelabs.com": {
         "operator": "Alchemy Validators",
@@ -71,7 +72,7 @@
       },
       "https://walrus-agg.mainnet.obelisk.sh": {
         "operator": "Obelisk",
-        "cache": false
+        "functional": false
       },
       "https://walrus-aggregator-mainnet.chainode.tech:9002": {
         "operator": "ChainodeTech",
@@ -247,7 +248,7 @@
     "aggregators": {
       "https://aggregator.walrus-testnet.h2o-nodes.com": {
         "operator": "H2O Nodes",
-        "cache": false
+        "cache": true
       },
       "https://agg.test.walrus.eosusa.io": {
         "operator": "EOSUSA",
@@ -259,11 +260,11 @@
       },
       "https://aggregator.testnet.walrus.mirai.cloud": {
         "operator": "Studio Mirai",
-        "cache": true
+        "cache": false
       },
       "https://aggregator.walrus-01.tududes.com": {
         "operator": "TuDudes",
-        "cache": false
+        "cache": true
       },
       "https://aggregator.walrus-testnet.walrus.space": {
         "operator": "Mysten Labs",
@@ -279,7 +280,8 @@
       },
       "https://sm1-walrus-testnet-aggregator.stakesquid.com": {
         "operator": "StakeSquid",
-        "functional": false
+        "functional": false,
+        "cache": true
       },
       "https://sui-walrus-tn-aggregator.bwarelabs.com": {
         "operator": "Alchemy Validators",
@@ -291,7 +293,7 @@
       },
       "https://testnet-aggregator-walrus.kiliglab.io": {
         "operator": "KiligLab",
-        "cache": true
+        "cache": false
       },
       "https://testnet-aggregator.walrus.graphyte.dev": {
         "operator": "Graphyte Labs",
@@ -303,7 +305,7 @@
       },
       "https://testnet.aggregator.walrus.silentvalidator.com": {
         "operator": "Silent",
-        "cache": false
+        "cache": true
       },
       "https://wal-aggregator-testnet.staketab.org": {
         "operator": "Staketab",
@@ -319,7 +321,7 @@
       },
       "https://walrus-agg.testnet.obelisk.sh": {
         "operator": "Obelisk",
-        "cache": false
+        "functional": false
       },
       "https://walrus-aggregator-testnet.cetus.zone": {
         "operator": "Cetus",
@@ -351,7 +353,7 @@
       },
       "https://walrus-testnet-aggregator-1.zkv.xyz": {
         "operator": "ZKV",
-        "cache": false
+        "cache": true
       },
       "https://walrus-testnet-aggregator.brightlystake.com": {
         "operator": "Brightlystake",
@@ -371,7 +373,7 @@
       },
       "https://walrus-testnet-aggregator.dzdaic.com": {
         "operator": "DAIC Infra (Coinage x DAIC)",
-        "cache": false
+        "cache": true
       },
       "https://walrus-testnet-aggregator.everstake.one": {
         "operator": "Everstake",
@@ -383,7 +385,7 @@
       },
       "https://walrus-testnet-aggregator.natsai.xyz": {
         "operator": "Natsai",
-        "cache": false
+        "cache": true
       },
       "https://walrus-testnet-aggregator.nodeinfra.com": {
         "operator": "Nodeinfra",
@@ -395,7 +397,7 @@
       },
       "https://walrus-testnet-aggregator.redundex.com": {
         "operator": "Redundex",
-        "cache": false
+        "cache": true
       },
       "https://walrus-testnet-aggregator.rpc101.org": {
         "operator": "node101",
@@ -407,7 +409,7 @@
       },
       "https://walrus-testnet-aggregator.stakecraft.com": {
         "operator": "StakeCraft",
-        "cache": false
+        "cache": true
       },
       "https://walrus-testnet-aggregator.stakeengine.co.uk": {
         "operator": "Stake Engine",
@@ -431,7 +433,7 @@
       },
       "https://walrus-testnet-aggregator.starduststaking.com": {
         "operator": "Stardust Staking",
-        "cache": false
+        "cache": true
       },
       "https://walrus-testnet-aggregator.talentum.id": {
         "operator": "Talentum",
@@ -439,7 +441,7 @@
       },
       "https://walrus-testnet-aggregator.trusted-point.com": {
         "operator": "TrustedPoint",
-        "cache": false
+        "cache": true
       },
       "https://walrus-testnet.blockscope.net": {
         "operator": "Blockscope.net",
@@ -455,7 +457,7 @@
       },
       "https://walrus-testnet.veera.com": {
         "operator": "Veera Browser",
-        "cache": false
+        "cache": true
       },
       "https://walrus-tn.juicystake.io:9443": {
         "operator": "ProStaking",
@@ -475,7 +477,7 @@
       },
       "http://walrus-storage.testnet.nelrann.org:9000": {
         "operator": "Nelrann",
-        "cache": false
+        "cache": true
       },
       "http://walrus-testnet.equinoxdao.xyz:9000": {
         "operator": "EquinoxDao",
